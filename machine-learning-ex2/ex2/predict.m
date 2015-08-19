@@ -16,7 +16,7 @@ p = zeros(m, 1);
 %
 
 Ans = sigmoid(X * theta);
-for i = 1:size(X)
+for i = 1:m
   if Ans(i, :) >= 0.5,
     p(i, :) = 1;
   else

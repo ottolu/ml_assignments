@@ -42,7 +42,7 @@ J = sum(-y .* log(Ans) - (1 - y) .* log(1 - Ans)) / m + lambda * sum(theta(2:siz
 temp = theta;
 temp(1) = 0;
 
-grad = ((X‘ * (Ans - y)) + lambda * temp) / m;
+grad = ((X' * (Ans - y)) + lambda * temp) / m;
 
 % =============================================================
 
