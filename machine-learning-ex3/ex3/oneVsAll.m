@@ -49,7 +49,7 @@ X = [ones(m, 1) X];
 %                 initial_theta, options);
 %
 
-for i = 1:10
+for i = 1:num_labels
 
   % Set Initial theta
   initial_theta = zeros(n + 1, 1);
