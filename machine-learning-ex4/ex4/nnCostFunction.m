@@ -62,23 +62,44 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+% Feedforward
+a1m = X;
+a1_1m = [ones(m, 1) a1m];
+z2m = a1_1m * Theta1';
+a2m = sigmoid(z2m);
+a2_1m = [ones(m, 1) a2m];
+z3m = a2_1m * Theta2';
+Ans = sigmoid(z3m);
 
+ym = repmat((1:num_labels), m, 1);
+ym = (ym == y);
 
+J =  sum(sum(-ym .* log(Ans) - (1 - ym) .* log(1 - Ans))) / m + ...
+      lambda * (sum(sum(Theta1(:, 2:end) .^ 2)) + sum(sum(Theta2(:, 2:end) .^ 2))) / (2 * m);
 
+d1 = zeros(size(Theta1));
+d2 = zeros(size(Theta2));
+      
+for i = 1:m
+  a1_1 = a1_1m(i, :)';
+  z2 = z2m(i, :)';
+  a2_1 = a2_1m(i, :)';
+  z3 = z3m(i, :)';
+  a3 = Ans(i, :)';
+  yy = ym(i, :)';
+  
+  o3 = a3 - yy;
+  o2 = Theta2' * o3;
+  o2 = o2(2:end) .* sigmoidGradient(z2);
+  
+  d2 = d2 + o3 * a2_1';
+  d1 = d1 + o2 * a1_1';
+end
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+Theta1(:, 1) = zeros(size(Theta1, 1), 1);
+Theta2(:, 1) = zeros(size(Theta2, 1), 1);
+Theta1_grad = d1 / m + lambda * Theta1 / m;
+Theta2_grad = d2 / m + lambda * Theta2 / m;
 
 % -------------------------------------------------------------
 
