@@ -24,13 +24,21 @@ patches = zeros(patchsize*patchsize, numpatches);
 %  patch corresponding to the pixels in the block (21,21) to (30,30) of
 %  Image 1
 
+imageWidth = 512;
 
+xPos = ceil(rand(100) * (imageWidth - patchsize + 1));
+yPos = ceil(rand(100) * (imageWidth - patchsize + 1));
+idxs = ceil(rand(100) * 10);
 
-
-
-
-
-
+for i = 1:100
+  for j = 1:100
+    x = xPos(i, j);
+    y = yPos(i, j);
+    idx = idxs(i, j);
+    subImg = IMAGES(x : x + patchsize - 1, y : y + patchsize - 1, idx);
+    patches(:, i * 100 + j) = subImg(:);
+  end
+end
 
 
 %% ---------------------------------------------------------------

@@ -35,6 +35,8 @@ display_network(patches(:,randi(size(patches,2),200,1)),8);
 %  Obtain random parameters theta
 theta = initializeParameters(hiddenSize, visibleSize);
 
+pause;
+
 %%======================================================================
 %% STEP 2: Implement sparseAutoencoderCost
 %
