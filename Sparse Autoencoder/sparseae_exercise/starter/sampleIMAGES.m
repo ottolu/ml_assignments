@@ -26,20 +26,13 @@ patches = zeros(patchsize*patchsize, numpatches);
 
 imageWidth = 512;
 
-xPos = ceil(rand(100) * (imageWidth - patchsize + 1));
-yPos = ceil(rand(100) * (imageWidth - patchsize + 1));
-idxs = ceil(rand(100) * 10);
-
-for i = 1:100
-  for j = 1:100
-    x = xPos(i, j);
-    y = yPos(i, j);
-    idx = idxs(i, j);
+for i = 1:10000
+    x = randi(imageWidth - patchsize + 1);
+    y = randi(imageWidth - patchsize + 1);
+    idx = randi(10);
     subImg = IMAGES(x : x + patchsize - 1, y : y + patchsize - 1, idx);
-    patches(:, i * 100 + j) = subImg(:);
-  end
+    patches(:, i) = subImg(:);
 end
-
 
 %% ---------------------------------------------------------------
 % For the autoencoder to work well we need to normalize the data
