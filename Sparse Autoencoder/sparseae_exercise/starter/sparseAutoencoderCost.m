@@ -42,13 +42,28 @@ b2grad = zeros(size(b2));
 % the gradient descent update to W1 would be W1 := W1 - alpha * W1grad, and similarly for W2, b1, b2. 
 % 
 
+%forward feed
+z2 = W1 * data + b1; // 25 * 10000
+a2 = sigmoid(z2);
+z3 = W2 * a2 + b2; // 64 * 10000
+Ans = sigmoid(z3);
 
+m = size(data, 2);
 
+J = sum((Ans - data) .^ 2) / (2 * m) + ...
+      lambda * (sum(sum(W1 .^ 2)) + sum(sum(W2 .^ 2))) / 2; 
 
+o3 = (Ans - data) .* dsigmoid(Ans);
+dw2 = o3 * a2';
+db2 = sum(o3');
+o2 = (W2' * o3) .* dsigmoid(a2);
+dw1 = o2 * data';
+db1 = sum(o2');
 
-
-
-
+W1grad = dw1 / m + lambda * W1 / m;
+b1grad = db1 / m;
+W2grad = dw2 / m + lambda * W2 / m;
+b2grad = db2 / m;
 
 
 
@@ -75,7 +90,10 @@ end
 % column) vector (say (z1, z2, z3)) and returns (f(z1), f(z2), f(z3)). 
 
 function sigm = sigmoid(x)
-  
     sigm = 1 ./ (1 + exp(-x));
+end
+
+function dsigm = dsigmoid(a)
+    dsigm = a .* (1 - a);
 end
 
