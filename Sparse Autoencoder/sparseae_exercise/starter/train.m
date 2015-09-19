@@ -29,7 +29,7 @@ beta = 3;            % weight of sparsity penalty term
 %  display a random sample of 200 patches from the dataset
 
 patches = sampleIMAGES;
-% display_network(patches(:,randi(size(patches,2),200,1)),8);
+display_network(patches(:,randi(size(patches,2),200,1)),8);
 
 
 %  Obtain random parameters theta
@@ -80,17 +80,17 @@ checkNumericalGradient();
 
 % Now we can use it to check your cost function and derivative calculations
 % for the sparse autoencoder.  
-numgrad = computeNumericalGradient( @(x) sparseAutoencoderCost(x, visibleSize, ...
-                                                  hiddenSize, lambda, ...
-                                                  sparsityParam, beta, ...
-                                                  patches), theta);
+% numgrad = computeNumericalGradient( @(x) sparseAutoencoderCost(x, visibleSize, ...
+%                                                  hiddenSize, lambda, ...
+%                                                  sparsityParam, beta, ...
+%                                                  patches), theta);
 
 % Use this to visually compare the gradients side by side
-disp([numgrad grad]); 
+% disp([numgrad grad]); 
 
 % Compare numerically computed gradients with the ones obtained from backpropagation
-diff = norm(numgrad-grad)/norm(numgrad+grad);
-disp(diff); % Should be small. In our implementation, these values are
+% diff = norm(numgrad-grad)/norm(numgrad+grad);
+% disp(diff); % Should be small. In our implementation, these values are
             % usually less than 1e-9.
 
             % When you got this working, Congratulations!!! 
@@ -124,7 +124,7 @@ options.display = 'on';
 %% STEP 5: Visualization 
 
 W1 = reshape(opttheta(1:hiddenSize*visibleSize), hiddenSize, visibleSize);
-% display_network(W1', 12); 
+display_network(W1', 12); 
 
 print -djpeg weights.jpg   % save the visualization to a file 
 

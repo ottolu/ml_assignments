@@ -43,33 +43,36 @@ b2grad = zeros(size(b2));
 % 
 
 %forward feed
-z2 = W1 * data + b1; % 25 * 10000
+% z2 = W1 * data + b1; % 25 * 10000
+z2 = bsxfun(@plus, W1 * data, b1);
 a2 = sigmoid(z2);
-z3 = W2 * a2 + b2; % 64 * 10000
+% z3 = W2 * a2 + b2; % 64 * 10000
+z3 = bsxfun(@plus, W2 * a2, b2);
 Ans = sigmoid(z3);
 
 m = size(data, 2);
 
-p = sum(a2, 2) / m;
+p = sum(a2, 2) ./ m;
 sp = sparsityParam;
 
-J = ((sum(sum(Ans - data))) .^ 2) / (2 * m) + ...
+J = sum(sum((Ans - data) .^ 2)) ./ (2 * m) + ...
       lambda * (sum(sum(W1 .^ 2)) + sum(sum(W2 .^ 2))) / 2 + ...
-      beta * sum(sp * log(sp / p) + (1 - sp) * log((1 - sp) / (1 - p))); 
+      beta * sum(sp .* log(sp ./ p) + (1 - sp) .* log((1 - sp) ./ (1 - p))); 
 
 o3 = (Ans - data) .* dsigmoid(Ans);
 dw2 = o3 * a2';
 db2 = sum(o3, 2);
-o2 = ((W2' * o3) + (beta * ((1 - sp) / (1 - p) - (sp / p)))').* dsigmoid(a2);
+o2 = bsxfun(@plus, W2' * o3, beta .* ((1 - sp) ./ (1 - p) - (sp ./ p)));
+o2 = o2 .* dsigmoid(a2);
 dw1 = o2 * data';
 db1 = sum(o2, 2);
 
-W1grad = dw1 / m + lambda * W1 / m;
-b1grad = db1 / m;
-W2grad = dw2 / m + lambda * W2 / m;
-b2grad = db2 / m;
+W1grad = dw1 ./ m + lambda .* W1;
+b1grad = db1 ./ m;
+W2grad = dw2 ./ m + lambda .* W2;
+b2grad = db2 ./ m;
 
-
+cost = J;
 
 
 
