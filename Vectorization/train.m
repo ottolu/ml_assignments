@@ -1,3 +1,4 @@
+clc; close all;
 %% Learn MNIST by Sparse Autoencoder
 
 %  Instructions
@@ -122,7 +123,7 @@ options.display = 'on';
 %% STEP 5: Visualization 
 
 W1 = reshape(opttheta(1:hiddenSize*visibleSize), hiddenSize, visibleSize);
-display_network(W1'); 
+display_network(W1', 12); 
 
 print -djpeg weights.jpg   % save the visualization to a file 
 
