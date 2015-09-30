@@ -15,6 +15,7 @@ display_network(x(:,randsel));
 %  You can make use of the mean and repmat/bsxfun functions.
 
 % -------------------- YOUR CODE HERE -------------------- 
+x = bsxfun(@minus, x, mean(x, 1)); 
 
 %%================================================================
 %% Step 1a: Implement PCA to obtain xRot
@@ -24,7 +25,9 @@ display_network(x(:,randsel));
 
 % -------------------- YOUR CODE HERE -------------------- 
 xRot = zeros(size(x)); % You need to compute this
-
+sigma = x * x' ./ size(x, 2);
+[u, s, v] = svd(sigma);
+xRot = u' * x;
 
 %%================================================================
 %% Step 1b: Check your implementation of PCA
@@ -37,6 +40,7 @@ xRot = zeros(size(x)); % You need to compute this
 
 % -------------------- YOUR CODE HERE -------------------- 
 covar = zeros(size(x, 1)); % You need to compute this
+covar = xRot * xRot' / size(xRot, 2);
 
 % Visualise the covariance matrix. You should see a line across the
 % diagonal against a blue background.
@@ -50,7 +54,15 @@ imagesc(covar);
 
 % -------------------- YOUR CODE HERE -------------------- 
 k = 0; % Set k accordingly
-
+p = 0.0;
+curVar = 0;
+var = diag(s);
+sumVar = sum(var);
+while p < 0.99
+    k = k + 1;
+    curVar = curVar + var(k);
+    p = curVar / sumVar;
+end
 
 %%================================================================
 %% Step 3: Implement PCA with dimension reduction
@@ -68,7 +80,8 @@ k = 0; % Set k accordingly
 
 % -------------------- YOUR CODE HERE -------------------- 
 xHat = zeros(size(x));  % You need to compute this
-
+xRot(k + 1:end, :) = 0;
+xHat = u * xRot;
 
 % Visualise the data, and compare it to the raw data
 % You should observe that the raw and processed data are of comparable quality.
@@ -89,6 +102,7 @@ epsilon = 0.1;
 xPCAWhite = zeros(size(x));
 
 % -------------------- YOUR CODE HERE -------------------- 
+xPCAWhite = diag(1./sqrt(diag(s) + epsilon)) * u' * x;
 
 %%================================================================
 %% Step 4b: Check your implementation of PCA whitening 
@@ -107,6 +121,7 @@ xPCAWhite = zeros(size(x));
 %  becoming smaller.
 
 % -------------------- YOUR CODE HERE -------------------- 
+covar = xPCAWhite * xPCAWhite' / size(xPCAWhite, 2);
 
 % Visualise the covariance matrix. You should see a red line across the
 % diagonal against a blue background.
@@ -122,6 +137,7 @@ imagesc(covar);
 xZCAWhite = zeros(size(x));
 
 % -------------------- YOUR CODE HERE -------------------- 
+xZCAWhite = u * diag(1./sqrt(diag(s) + epsilon)) * u' * x;
 
 % Visualise the data, and compare it to the raw data.
 % You should observe that the whitened images have enhanced edges.
