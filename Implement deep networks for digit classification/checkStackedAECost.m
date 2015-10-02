@@ -9,7 +9,7 @@ function [] = checkStackedAECost()
 %% Setup random data / small model
 inputSize = 4;
 hiddenSize = 5;
-lambda = 0.01;
+lambda = 0; %0.01;
 data   = randn(inputSize, 5);
 labels = [ 1 2 1 2 1 ];
 numClasses = 2;
@@ -36,7 +36,7 @@ numgrad = computeNumericalGradient( @(x) stackedAECost(x, inputSize, ...
                                         stackedAETheta);
 
 % Use this to visually compare the gradients side by side
-disp([numgrad grad]); 
+% disp([numgrad grad]); 
 
 % Compare numerically computed gradients with the ones obtained from backpropagation
 disp('Norm between numerical and analytical gradient (should be less than 1e-9)');
@@ -45,5 +45,4 @@ disp(diff); % Should be small. In our implementation, these values are
             % usually less than 1e-9.
 
             % When you got this working, Congratulations!!! 
-            
             

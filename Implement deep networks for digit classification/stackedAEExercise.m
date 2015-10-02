@@ -28,7 +28,7 @@ sparsityParam = 0.1;   % desired average activation of the hidden units.
 lambda = 3e-3;         % weight decay parameter       
 beta = 3;              % weight of sparsity penalty term       
 
-maxIter = 400;
+maxIter = 4;
 
 %%======================================================================
 %% STEP 1: Load data from the MNIST database
@@ -166,21 +166,11 @@ stackedAETheta = [ saeSoftmaxOptTheta ; stackparams ];
 %
 %
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+[stackedAEOptTheta, cost] = minFunc( @(p) stackedAECost(p, ...
+                                   inputSize, hiddenSizeL2, ...
+                                   numClasses, netconfig, ...
+                                   lambda, trainData, trainLabels), ...
+                                   stackedAETheta, options);
 
 % -------------------------------------------------------------------------
 

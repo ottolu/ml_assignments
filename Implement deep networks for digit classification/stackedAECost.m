@@ -71,9 +71,9 @@ z4 = bsxfun(@minus, z4, max(z4));
 a4 = exp(z4);
 a4 = bsxfun(@rdivide, a4, sum(a4));
 
-cost = sum(sum((Ans - data) .^ 2)) ./ (2 * m) + ...
-      sum(sum(softmaxTheta .^ 2))) / 2;
-
+cost = - sum(sum(groundTruth .* log(a4))) ./ m + ...
+      lambda * sum(sum(softmaxTheta .^ 2)) / 2;
+  
 o4 = - (groundTruth - a4);
 o3 = (softmaxTheta' * o4) .* dsigmoid(z3);
 o2 = (stack{2}.w' * o3) .* dsigmoid(z2);
@@ -83,11 +83,11 @@ db2 = sum(o3, 2);
 dw1 = o2 * data';
 db1 = sum(o2, 2);
 
-softmaxThetaGrad = (o4 * a3') ./ m + lamaba .* softmaxTheta;
+softmaxThetaGrad = (o4 * a3') ./ m + lambda .* softmaxTheta;
 
-stackgrad{1}.w = dw1 ./ m + lambda .* W1;
+stackgrad{1}.w = dw1 ./ m + lambda .* stack{1}.w;
 stackgrad{1}.b = db1 ./ m;
-stackgrad{2}.w = dw2 ./ m + lambda .* W2;
+stackgrad{2}.w = dw2 ./ m + lambda .* stack{2}.w;
 stackgrad{2}.b = db2 ./ m;
 
 % -------------------------------------------------------------------------
@@ -104,5 +104,6 @@ function sigm = sigmoid(x)
 end
 
 function dsigm = dsigmoid(a)
-    dsigm = a .* (1 - a);
+     e_a = exp(-a);
+     dsigm = e_a ./ ((1 + e_a).^2); 
 end
