@@ -43,10 +43,8 @@ b2grad = zeros(size(b2));
 % 
 
 %forward feed
-% z2 = W1 * data + b1; % 25 * 10000
 z2 = bsxfun(@plus, W1 * data, b1);
 a2 = sigmoid(z2);
-% z3 = W2 * a2 + b2; % 64 * 10000
 z3 = bsxfun(@plus, W2 * a2, b2);
 a3 = sigmoid(z3);
 

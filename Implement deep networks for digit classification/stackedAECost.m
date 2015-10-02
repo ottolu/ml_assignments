@@ -75,8 +75,8 @@ cost = - sum(sum(groundTruth .* log(a4))) ./ m + ...
       lambda * sum(sum(softmaxTheta .^ 2)) / 2;
   
 o4 = - (groundTruth - a4);
-o3 = (softmaxTheta' * o4) .* dsigmoid(z3);
-o2 = (stack{2}.w' * o3) .* dsigmoid(z2);
+o3 = (softmaxTheta' * o4) .* dsigmoid(a3);
+o2 = (stack{2}.w' * o3) .* dsigmoid(a2);
 
 dw2 = o3 * a2';
 db2 = sum(o3, 2);
@@ -104,6 +104,5 @@ function sigm = sigmoid(x)
 end
 
 function dsigm = dsigmoid(a)
-     e_a = exp(-a);
-     dsigm = e_a ./ ((1 + e_a).^2); 
+    dsigm = a .* (1 - a);
 end
