@@ -2,7 +2,7 @@ function patches = sampleIMAGES()
 % sampleIMAGES
 % Returns 10000 patches for training
 
-images = loadMNISTImages('mnist/train-images-idx3-ubyte');    % load images from disk 
+images = loadMNISTImages('../mnist/train-images-idx3-ubyte');    % load images from disk 
 patches = images(:, 1:10000)
 
 %% ---------------------------------------------------------------

@@ -35,8 +35,8 @@ lambda = 1e-4; % Weight decay parameter
 % On some platforms, the files might be saved as 
 % train-images.idx3-ubyte / train-labels.idx1-ubyte
 
-images = loadMNISTImages('mnist/train-images-idx3-ubyte');
-labels = loadMNISTLabels('mnist/train-labels-idx1-ubyte');
+images = loadMNISTImages('../mnist/train-images-idx3-ubyte');
+labels = loadMNISTLabels('../mnist/train-labels-idx1-ubyte');
 labels(labels==0) = 10; % Remap 0 to 10
 
 inputData = images;
@@ -100,6 +100,8 @@ softmaxModel = softmaxTrain(inputSize, numClasses, lambda, ...
 % MNIST data set, in practice, training for more iterations is usually
 % beneficial.
 
+pause;
+
 %%======================================================================
 %% STEP 5: Testing
 %
@@ -108,8 +110,8 @@ softmaxModel = softmaxTrain(inputSize, numClasses, lambda, ...
 %  (in softmaxPredict.m), which should return predictions
 %  given a softmax model and the input data.
 
-images = loadMNISTImages('mnist/t10k-images-idx3-ubyte');
-labels = loadMNISTLabels('mnist/t10k-labels-idx1-ubyte');
+images = loadMNISTImages('../mnist/t10k-images-idx3-ubyte');
+labels = loadMNISTLabels('../mnist/t10k-labels-idx1-ubyte');
 labels(labels==0) = 10; % Remap 0 to 10
 
 inputData = images;
