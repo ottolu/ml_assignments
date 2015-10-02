@@ -15,8 +15,12 @@ pred = zeros(1, size(data, 2));
 %  Instructions: Compute pred using theta assuming that the labels start 
 %                from 1.
 
+numClasses = softmaxModel.numClasses;
+inputSize = softmaxModel.inputSize;
+theta = reshape(theta, numClasses, inputSize);
 
-
+result = theta * data;
+[p,pred] = max(result, [], 1);
 
 
 

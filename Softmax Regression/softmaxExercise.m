@@ -45,7 +45,7 @@ inputData = images;
 % in order to speed up gradient checking. 
 % Here, we create synthetic dataset using random data for testing
 
-DEBUG = true; % Set DEBUG to true when debugging.
+DEBUG = false; % Set DEBUG to true when debugging.
 if DEBUG
     inputSize = 8;
     inputData = randn(8, 100);
@@ -99,8 +99,6 @@ softmaxModel = softmaxTrain(inputSize, numClasses, lambda, ...
 % Although we only use 100 iterations here to train a classifier for the 
 % MNIST data set, in practice, training for more iterations is usually
 % beneficial.
-
-pause;
 
 %%======================================================================
 %% STEP 5: Testing
