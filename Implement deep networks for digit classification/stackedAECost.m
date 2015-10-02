@@ -36,8 +36,8 @@ end
 cost = 0; % You need to compute this
 
 % You might find these variables useful
-M = size(data, 2);
-groundTruth = full(sparse(labels, 1:M, 1));
+m = size(data, 2);
+groundTruth = full(sparse(labels, 1:m, 1));
 
 
 %% --------------------------- YOUR CODE HERE -----------------------------

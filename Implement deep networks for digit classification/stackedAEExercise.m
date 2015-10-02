@@ -28,14 +28,16 @@ sparsityParam = 0.1;   % desired average activation of the hidden units.
 lambda = 3e-3;         % weight decay parameter       
 beta = 3;              % weight of sparsity penalty term       
 
+maxIter = 400;
+
 %%======================================================================
 %% STEP 1: Load data from the MNIST database
 %
 %  This loads our training data from the MNIST database files.
 
 % Load MNIST database files
-trainData = loadMNISTImages('mnist/train-images-idx3-ubyte');
-trainLabels = loadMNISTLabels('mnist/train-labels-idx1-ubyte');
+trainData = loadMNISTImages('../mnist/train-images-idx3-ubyte');
+trainLabels = loadMNISTLabels('../mnist/train-labels-idx1-ubyte');
 
 trainLabels(trainLabels == 0) = 10; % Remap 0 to 10 since our labels need to start from 1
 
@@ -55,19 +57,20 @@ sae1Theta = initializeParameters(hiddenSizeL1, inputSize);
 %                an hidden size of "hiddenSizeL1"
 %                You should store the optimal parameters in sae1OptTheta
 
+addpath minFunc/
+options.Method = 'lbfgs'; % Here, we use L-BFGS to optimize our cost
+                          % function. Generally, for minFunc to work, you
+                          % need a function pointer with two outputs: the
+                          % function value and the gradient. In our problem,
+                          % sparseAutoencoderCost.m satisfies this.
+options.maxIter = maxIter;	  % Maximum number of iterations of L-BFGS to run 
+options.display = 'on';
 
-
-
-
-
-
-
-
-
-
-
-
-
+[sae1OptTheta, cost] = minFunc( @(p) sparseAutoencoderCost(p, ...
+                                   inputSize, hiddenSizeL1, ...
+                                   lambda, sparsityParam, ...
+                                   beta, trainData), ...
+                              sae1Theta, options);
 
 % -------------------------------------------------------------------------
 
@@ -93,17 +96,11 @@ sae2Theta = initializeParameters(hiddenSizeL2, hiddenSizeL1);
 %
 %                You should store the optimal parameters in sae2OptTheta
 
-
-
-
-
-
-
-
-
-
-
-
+[sae2OptTheta, cost] = minFunc( @(p) sparseAutoencoderCost(p, ...
+                                   hiddenSizeL1, hiddenSizeL2, ...
+                                   lambda, sparsityParam, ...
+                                   beta, sae1Features), ...
+                              sae2Theta, options);
 
 % -------------------------------------------------------------------------
 
@@ -131,15 +128,13 @@ saeSoftmaxTheta = 0.005 * randn(hiddenSizeL2 * numClasses, 1);
 %  NOTE: If you used softmaxTrain to complete this part of the exercise,
 %        set saeSoftmaxOptTheta = softmaxModel.optTheta(:);
 
+lambda = 1e-4;       % weight decay parameter       
 
+options.maxIter = maxIter;
+softmaxModel = softmaxTrain(hiddenSizeL2, numClasses, lambda, ...
+                            sae2Features, trainLabels, options);
 
-
-
-
-
-
-
-
+saeSoftmaxOptTheta = softmaxModel.optTheta(:);
 
 % -------------------------------------------------------------------------
 
@@ -199,8 +194,8 @@ stackedAETheta = [ saeSoftmaxOptTheta ; stackparams ];
 
 % Get labelled test images
 % Note that we apply the same kind of preprocessing as the training set
-testData = loadMNISTImages('mnist/t10k-images-idx3-ubyte');
-testLabels = loadMNISTLabels('mnist/t10k-labels-idx1-ubyte');
+testData = loadMNISTImages('../mnist/t10k-images-idx3-ubyte');
+testLabels = loadMNISTLabels('../mnist/t10k-labels-idx1-ubyte');
 
 testLabels(testLabels == 0) = 10; % Remap 0 to 10
 
