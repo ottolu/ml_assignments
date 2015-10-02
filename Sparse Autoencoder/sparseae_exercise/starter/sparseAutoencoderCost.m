@@ -59,11 +59,11 @@ J = sum(sum((Ans - data) .^ 2)) ./ (2 * m) + ...
       lambda * (sum(sum(W1 .^ 2)) + sum(sum(W2 .^ 2))) / 2 + ...
       beta * sum(sp .* log(sp ./ p) + (1 - sp) .* log((1 - sp) ./ (1 - p))); 
 
-o3 = (Ans - data) .* dsigmoid(Ans);
+o3 = (Ans - data) .* dsigmoid(z3);
 dw2 = o3 * a2';
 db2 = sum(o3, 2);
 o2 = bsxfun(@plus, W2' * o3, beta .* ((1 - sp) ./ (1 - p) - (sp ./ p)));
-o2 = o2 .* dsigmoid(a2);
+o2 = o2 .* dsigmoid(z2);
 dw1 = o2 * data';
 db1 = sum(o2, 2);
 

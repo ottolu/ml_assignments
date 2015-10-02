@@ -62,33 +62,22 @@ groundTruth = full(sparse(labels, 1:m, 1));
 %
 
 %forward feed
-z2 = bsxfun(@plus, stack{1}.w * data, stack{1}.b);
+z2 = bsxfun(@plus, stackgrad{1}.w * data, stackgrad{1}.b);
 a2 = sigmoid(z2);
-z3 = bsxfun(@plus, stack{2}.w * a2, stack{2}.b);
+z3 = bsxfun(@plus, stackgrad{2}.w * a2, stackgrad{2}.b);
 a3 = sigmoid(z3);
-z4 = softmaxTheta * a3;
-z4 = bsxfun(@minus, z4, max(z4));
-a4 = exp(z4);
-a4 = bsxfun(@rdivide, a4, sum(a4));
 
-cost = sum(sum((Ans - data) .^ 2)) ./ (2 * m) + ...
-      sum(sum(softmaxTheta .^ 2))) / 2;
+a4 = a
 
-o4 = - (groundTruth - a4);
-o3 = (softmaxTheta' * o4) .* dsigmoid(z3);
-o2 = (stack{2}.w' * o3) .* dsigmoid(z2);
 
-dw2 = o3 * a2';
-db2 = sum(o3, 2);
-dw1 = o2 * data';
-db1 = sum(o2, 2);
 
-softmaxThetaGrad = (o4 * a3') ./ m + lamaba .* softmaxTheta;
 
-stackgrad{1}.w = dw1 ./ m + lambda .* W1;
-stackgrad{1}.b = db1 ./ m;
-stackgrad{2}.w = dw2 ./ m + lambda .* W2;
-stackgrad{2}.b = db2 ./ m;
+
+
+
+
+
+
 
 % -------------------------------------------------------------------------
 
