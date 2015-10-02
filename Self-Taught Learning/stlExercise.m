@@ -31,8 +31,8 @@ maxIter = 400;
 %  change it.
 
 % Load MNIST database files
-mnistData   = loadMNISTImages('mnist/train-images-idx3-ubyte');
-mnistLabels = loadMNISTLabels('mnist/train-labels-idx1-ubyte');
+mnistData   = loadMNISTImages('../mnist/train-images-idx3-ubyte');
+mnistLabels = loadMNISTLabels('../mnist/train-labels-idx1-ubyte');
 
 % Set Unlabeled Set (All Images)
 
