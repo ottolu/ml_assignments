@@ -35,4 +35,12 @@ function [cost, grad] = sparseCodingWeightCost(weightMatrix, featureMatrix, visi
     %   weights given in weightMatrix.     
     % -------------------- YOUR CODE HERE --------------------    
 
+    mat = weightMatrix * featureMatrix - patches;
+    
+    % 
+    cost = trace(mat * mat') ./ numExamples + gamma * trace(weightMatrix * weightMatrix');
+    grad = (2 * mat * featureMatrix') ./ numExamples + 2 * gamma * weightMatrix;
+    
+    grad = grad(:);
+    
 end
