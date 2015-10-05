@@ -37,7 +37,7 @@ images = load('IMAGES.mat');
 images = images.IMAGES;
 
 patches = sampleIMAGES(images, patchDim, numPatches);
-display_network(patches(:, 1:64));
+display_network(patches(:, 1:numFeatures));
 
 %%======================================================================
 %% STEP 2: Implement and check sparse coding cost functions
@@ -211,12 +211,17 @@ for iteration = 1:200
     %   you should comment out the checking code before running the
     %   optimization.
     
-    [cost, grad] = sparseCodingWeightCost(weightMatrix, featureMatrix, visibleSize, numFeatures, batchPatches, gamma, lambda, epsilon, groupMatrix);
-    assert(norm(grad) < 1e-12, 'Weight gradient should be close to 0. Check your closed form solution for weightMatrix again.')
-    error('Weight gradient is okay. Comment out checking code before running optimization.');
+    weightMatrix = (batchPatches * featureMatrix') / ...
+        (gamma * batchNumPatches * eye(size(featureMatrix, 1)) + featureMatrix * featureMatrix');
+    
+    % [cost, grad] = sparseCodingWeightCost(weightMatrix, featureMatrix, visibleSize, numFeatures, batchPatches, gamma, lambda, epsilon, groupMatrix);
+    % assert(norm(grad) < 1e-12, 'Weight gradient should be close to 0. Check your closed form solution for weightMatrix again.')
+    % error('Weight gradient is okay. Comment out checking code before running optimization.');
     % -------------------- YOUR CODE HERE --------------------   
     
     % Visualize learned basis
     figure(1);
     display_network(weightMatrix);           
 end
+
+print -djpeg weights.jpg 
