@@ -48,6 +48,9 @@ display_network(patches(:, 1:64));
 %  2) sparseCodingWeightCost (in sparseCodingWeightCost.m) for the weights
 %     (used when optimizing for A, which is called weightMatrix in this exericse)
 
+DEBUGMODE = 0;
+if DEBUGMODE == 1
+    
 % We reduce the number of features and number of patches for debugging
 numFeatures = 5;
 patches = patches(:, 1:5);
@@ -112,6 +115,7 @@ diff = norm(numgrad-grad)/norm(numgrad+grad);
 fprintf('Feature difference (topographic): %g\n', diff);
 assert(diff < 1e-8, 'Feature difference too large. Check your feature cost function. ');
 
+end
 %%======================================================================
 %% STEP 3: Iterative optimization
 %  Once you have implemented the cost functions, you can now optimize for
@@ -125,8 +129,10 @@ assert(diff < 1e-8, 'Feature difference too large. Check your feature cost funct
 %  gradient as described in the instructions below, and then run the
 %  iterative optimization.
 
+addpath minFunc/
+
 % Initialize options for minFunc
-options.Method = 'lbfgs';
+options.Method = 'cg';
 options.display = 'off';
 options.verbose = 0;
 

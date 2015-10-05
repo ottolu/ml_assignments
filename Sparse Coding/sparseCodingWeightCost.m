@@ -37,7 +37,8 @@ function [cost, grad] = sparseCodingWeightCost(weightMatrix, featureMatrix, visi
 
     mat = weightMatrix * featureMatrix - patches;
     
-    % 
+    % ref: http://www.cnblogs.com/tornadomeet/archive/2013/04/14/3019885.html
+    % 为 Frobenius 范数,使用 trace
     cost = trace(mat * mat') ./ numExamples + gamma * trace(weightMatrix * weightMatrix');
     grad = (2 * mat * featureMatrix') ./ numExamples + 2 * gamma * weightMatrix;
     

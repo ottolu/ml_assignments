@@ -34,8 +34,22 @@ function [cost, grad] = sparseCodingFeatureCost(weightMatrix, featureMatrix, vis
     %   Write code to compute the cost and gradient with respect to the
     %   features given in featureMatrix.     
     %   You may wish to write the non-topographic version, ignoring
-    %   the grouping matrix groupMatrix first, and extend the 
+    %   the grouping matrix groupMatrix first, and extend the
     %   non-topographic version to the topographic version later.
     % -------------------- YOUR CODE HERE --------------------
     
+    mat = weightMatrix * featureMatrix - patches;
+    sparsityMatrix = sqrt(groupMatrix * (featureMatrix .^ 2) + epsilon);
+    
+    % ref: http://www.cnblogs.com/tornadomeet/archive/2013/04/14/3019885.html
+    % 为 Frobenius 范数,使用 trace
+    cost = trace(mat * mat') ./ numExamples + ...
+                lambda * sum(sparsityMatrix(:));
+    
+    % 具体求导公式参考 http://www.cnblogs.com/tornadomeet/archive/2013/04/16/3024292.html
+    grad = 2 * weightMatrix' * mat ./ numExamples + ...
+        lambda * groupMatrix' * (groupMatrix * (featureMatrix .^ 2) + epsilon) .^ (-0.5) .* featureMatrix;
+    
+    grad = grad(:);
+            
 end
